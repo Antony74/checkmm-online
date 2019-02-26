@@ -1,0 +1,16 @@
+{
+  "name": "checkmm-online",
+  "version": "1.0.0",
+  "repository": "https://github.com/Antony74/checkmm-online.git",
+  "author": "Antony <akb@akb.me.uk>",
+  "license": "CC0-1.0",
+  "dependencies": {
+    "checkmm": "https://github.com/Antony74/checkmm-js.git",
+    "http-server": "^0.11.1",
+    "lodash": "^4.17.11",
+    "lodash.clonedeep": "^4.5.0"
+  },
+  "scripts": {
+    "start": "http-server"
+  }
+}
