@@ -1,9 +1,74 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <style type="text/css">
+    body {
+      margin: 20px;
+    }
+    select, button, input {
+      margin: 2px;
+    }
+    select, input {
+      width: 150px;
+    }
+    .caption {
+      margin: 2px;
+      width: 100px;
+    }
+  </style>
   <script src="./node_modules/checkmm/index.js"></script>
 </head>
 <body>
-  Hello, world!
+
+  <table>
+    <tr>
+      <td><span class="caption">Metamath file</span></td>
+      <td><select id="chooseMMFile"></select></td>
+      <td><button id="validate">Validate</button></td>
+    </tr>
+    <tr>
+      <td><span clas="caption">GitHub user name</span></td>
+      <td><input></input></td>
+    </tr>
+    <tr>
+      <td><span clas="caption">GitHub project name</span></td>
+      <td><input></input></td>
+    </tr>
+    <tr>
+      <td><span clas="caption">File path</span></td>
+      <td><input></input></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><button id="advanced">&gt;&gt; Advanced</button></td>
+    </tr>
+  </table>
+
+  <script>
+    var config = [
+      {
+        name: 'demo0.mm',
+        value: 'node_modules/metamath-test/demo.mm'
+      },
+      {
+        name: 'anatomy.mm',
+        value: 'node_modules/metamath-test/anatomy.mm'
+      }
+    ];
+
+    var combo = document.getElementById('chooseMMFile');
+
+    for (var n = 0; n < config.length; ++n) {
+      var option = config[n];
+      var elm = document.createElement('option');
+      elm.textContent = option.name;
+      combo.appendChild(elm);
+    }
+
+    combo.addEventListener('change', function() {
+      console.log(combo);
+    });
+
+  </script>
 </body>
 </html>
