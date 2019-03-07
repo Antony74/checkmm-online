@@ -14,6 +14,13 @@
     .caption {
       margin: 2px;
       width: 100px;
+      text-align: right;
+    }
+    button {
+      width: 100px;
+    }
+    .advanced {
+      visibility: collapse
     }
   </style>
   <script src="./node_modules/checkmm/index.js"></script>
@@ -22,25 +29,29 @@
 
   <table>
     <tr>
-      <td><span class="caption">Metamath file</span></td>
+      <td class="caption">Metamath file</td>
       <td><select id="chooseMMFile"></select></td>
-      <td><button id="validate">Validate</button></td>
-    </tr>
-    <tr>
-      <td><span clas="caption">GitHub user name</span></td>
-      <td><input></input></td>
-    </tr>
-    <tr>
-      <td><span clas="caption">GitHub project name</span></td>
-      <td><input></input></td>
-    </tr>
-    <tr>
-      <td><span clas="caption">File path</span></td>
-      <td><input></input></td>
+      <td><button id="buttonValidate">Validate</button></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
-      <td><button id="advanced">&gt;&gt; Advanced</button></td>
+      <td><button id="buttonAdvanced">&gt;&gt; Advanced</button></td>
+    </tr>
+    <tr class="advanced">
+      <td class="caption">GitHub user name</td>
+      <td><input></input></td>
+    </tr>
+    <tr class="advanced">
+      <td class="caption">GitHub&nbsp;project&nbsp;name</td>
+      <td><input></input></td>
+    </tr>
+    <tr class="advanced">
+      <td class="caption">File path</td>
+      <td><input></input></td>
+    </tr>
+    <tr>
+      <td class="caption">&nbsp;</td>
+      <td id="url" colspan="2"></td>
     </tr>
   </table>
 
@@ -48,11 +59,15 @@
     var config = [
       {
         name: 'demo0.mm',
-        value: 'node_modules/metamath-test/demo.mm'
+        url: 'node_modules/metamath-test/demo0.mm'
       },
       {
         name: 'anatomy.mm',
-        value: 'node_modules/metamath-test/anatomy.mm'
+        url: 'node_modules/metamath-test/anatomy.mm'
+      },
+      {
+        name: 'badurl',
+        url: 'badurl'
       }
     ];
 
@@ -65,8 +80,47 @@
       combo.appendChild(elm);
     }
 
-    combo.addEventListener('change', function() {
-      console.log(combo);
+    var url = '';
+
+    function mmFileChange() {
+      for (var n = 0; n < config.length; ++n) {
+        var configItem = config[n];
+        if (configItem.name === combo.value) {
+          url = configItem.url;
+        }
+      }
+      document.getElementById('url').textContent = url;
+    }
+
+    mmFileChange();
+
+    combo.addEventListener('change', mmFileChange);
+
+    var bAdvanced = true;
+
+    var advancedButton = document.getElementById('buttonAdvanced');
+
+    function advancedButtonClicked() {
+      bAdvanced = !bAdvanced;
+
+      advancedButton.textContent = bAdvanced ? '<< Advanced' : '>> Advanced';
+
+      var elms = document.getElementsByClassName('advanced');
+      for (var n = 0; n < elms.length; ++n) {
+        var elm = elms[n];
+        elm.style.setProperty('visibility', bAdvanced ? 'visible' : 'collapse');
+      }
+    }
+
+    advancedButtonClicked();
+
+    advancedButton.addEventListener('click', advancedButtonClicked);
+
+    document.getElementById('buttonValidate').addEventListener('click', function() {
+      var mm = new checkmm.CheckMMex();
+      mm.readTokensAsync(url, function() {
+        console.log('done');
+      });
     });
 
   </script>
