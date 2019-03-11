@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
   <style type="text/css">
-    body {
+    * {
+      /* So 100% means 100% */
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      overflow-y: hidden;
+    }
+    table {
       margin: 20px;
     }
     select, button, input {
@@ -19,6 +27,10 @@
     button {
       width: 100px;
     }
+    .output {
+      height: calc(100% - 90px);
+      border: 1px solid gray
+    }
   </style>
   <script src="./node_modules/checkmm/index.js"></script>
 </head>
@@ -31,6 +43,8 @@
       <td><button id="buttonValidate">Validate</button></td>
     </tr>
   </table>
+
+  <div class="output">Ready</div>
 
   <script>
     var config = [
