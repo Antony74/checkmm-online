@@ -5,12 +5,17 @@
   "author": "Antony <akb@akb.me.uk>",
   "license": "CC0-1.0",
   "dependencies": {
-    "checkmm": "https://github.com/Antony74/checkmm-js.git"
+    "checkmm": "https://github.com/Antony74/checkmm-js.git",
+    "napa": "^3.0.0"
   },
   "devDependencies": {
     "http-server": "^0.11.1"
   },
   "scripts": {
+    "install": "napa",
     "start": "http-server"
+  },
+  "napa": {
+    "metamath-test": "https://github.com/david-a-wheeler/metamath-test.git"
   }
 }

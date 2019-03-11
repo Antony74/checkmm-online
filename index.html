@@ -19,9 +19,6 @@
     button {
       width: 100px;
     }
-    .advanced {
-      visibility: collapse
-    }
   </style>
   <script src="./node_modules/checkmm/index.js"></script>
 </head>
@@ -33,41 +30,101 @@
       <td><select id="chooseMMFile"></select></td>
       <td><button id="buttonValidate">Validate</button></td>
     </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td><button id="buttonAdvanced">&gt;&gt; Advanced</button></td>
-    </tr>
-    <tr class="advanced">
-      <td class="caption">GitHub user name</td>
-      <td><input></input></td>
-    </tr>
-    <tr class="advanced">
-      <td class="caption">GitHub&nbsp;project&nbsp;name</td>
-      <td><input></input></td>
-    </tr>
-    <tr class="advanced">
-      <td class="caption">File path</td>
-      <td><input></input></td>
-    </tr>
-    <tr>
-      <td class="caption">&nbsp;</td>
-      <td id="url" colspan="2"></td>
-    </tr>
   </table>
 
   <script>
     var config = [
       {
-        name: 'demo0.mm',
-        url: 'node_modules/metamath-test/demo0.mm'
-      },
-      {
         name: 'anatomy.mm',
         url: 'node_modules/metamath-test/anatomy.mm'
       },
       {
+        name: 'anatomy-bad1.mm',
+        url: 'node_modules/metamath-test/anatomy-bad1.mm'
+      },
+      {
+        name: 'anatomy-bad2.mm',
+        url: 'node_modules/metamath-test/anatomy-bad2.mm'
+      },
+      {
+        name: 'anatomy-bad3.mm',
+        url: 'node_modules/metamath-test/anatomy-bad3.mm'
+      },
+      {
         name: 'badurl',
         url: 'badurl'
+      },
+      {
+        name: 'big-unifier-bad1.mm',
+        url: 'node_modules/metamath-test/big-unifier-bad1.mm'
+      },
+      {
+        name: 'big-unifier-bad2.mm',
+        url: 'node_modules/metamath-test/big-unifier-bad2.mm'
+      },
+      {
+        name: 'big-unifier-bad3.mm',
+        url: 'node_modules/metamath-test/big-unifier-bad3.mm'
+      },
+      {
+        name: 'big-unifier.mm',
+        url: 'node_modules/metamath-test/big-unifier.mm'
+      },
+      {
+        name: 'demo0-bad1.mm',
+        url: 'node_modules/metamath-test/demo0-bad1.mm'
+      },
+      {
+        name: 'demo0-includee.mm',
+        url: 'node_modules/metamath-test/demo0-includee.mm'
+      },
+      {
+        name: 'demo0-includer.mm',
+        url: 'node_modules/metamath-test/demo0-includer.mm'
+      },
+      {
+        name: 'demo0.mm',
+        url: 'node_modules/metamath-test/demo0.mm'
+      },
+      {
+        name: 'emptyline.mm',
+        url: 'node_modules/metamath-test/emptyline.mm'
+      },
+      {
+        name: 'hol.mm',
+        url: 'node_modules/metamath-test/hol.mm'
+      },
+      {
+        name: 'iset.mm',
+        url: 'node_modules/metamath-test/iset.mm'
+      },
+      {
+        name: 'miu.mm',
+        url: 'node_modules/metamath-test/miu.mm'
+      },
+      {
+        name: 'nf.mm',
+        url: 'node_modules/metamath-test/nf.mm'
+      },
+      {
+        name: 'peano-fixed.mm',
+        url: 'node_modules/metamath-test/peano-fixed.mm'
+      },
+      {
+        name: 'ql.mm',
+        url: 'node_modules/metamath-test/ql.mm'
+      },
+      {
+        name: 'set-dist.mm',
+        url: 'node_modules/metamath-test/anatomy.mm'
+      },
+      {
+        name: 'set.2010-08-29.mm',
+        url: 'node_modules/metamath-test/set.2010-08-29.mm'
+      },
+      {
+        name: 'set.mm',
+        url: 'node_modules/metamath-test/set.mm'
       }
     ];
 
@@ -80,46 +137,24 @@
       combo.appendChild(elm);
     }
 
-    var url = '';
+    document.getElementById('buttonValidate').addEventListener('click', function() {
 
-    function mmFileChange() {
+      var url = '';
+
       for (var n = 0; n < config.length; ++n) {
         var configItem = config[n];
         if (configItem.name === combo.value) {
           url = configItem.url;
         }
       }
-      document.getElementById('url').textContent = url;
-    }
 
-    mmFileChange();
-
-    combo.addEventListener('change', mmFileChange);
-
-    var bAdvanced = true;
-
-    var advancedButton = document.getElementById('buttonAdvanced');
-
-    function advancedButtonClicked() {
-      bAdvanced = !bAdvanced;
-
-      advancedButton.textContent = bAdvanced ? '<< Advanced' : '>> Advanced';
-
-      var elms = document.getElementsByClassName('advanced');
-      for (var n = 0; n < elms.length; ++n) {
-        var elm = elms[n];
-        elm.style.setProperty('visibility', bAdvanced ? 'visible' : 'collapse');
-      }
-    }
-
-    advancedButtonClicked();
-
-    advancedButton.addEventListener('click', advancedButtonClicked);
-
-    document.getElementById('buttonValidate').addEventListener('click', function() {
       var mm = new checkmm.CheckMMex();
-      mm.readTokensAsync(url, function() {
-        console.log('done');
+      mm.readTokensAsync(url, function(error) {
+        if (error) {
+          console.error(error);
+        } else {
+          console.log('done');
+        }
       });
     });
 
