@@ -27,9 +27,19 @@
     button {
       width: 100px;
     }
-    .output {
+    #output {
       height: calc(100% - 90px);
-      border: 1px solid gray
+      border-width: 5px;
+      border-style: solid;
+    }
+    .red {
+      border-color: red;
+    }
+    .yellow {
+      border-color: yellow;
+    }
+    .green {
+      border-color: chartreuse;
     }
   </style>
   <script src="./node_modules/checkmm/index.js"></script>
@@ -44,7 +54,7 @@
     </tr>
   </table>
 
-  <div class="output">Ready</div>
+  <div id="output" class="green">Ready</div>
 
   <script>
     var config = [
@@ -142,6 +152,29 @@
       }
     ];
 
+    var elmOutput = document.getElementById('output');
+
+    function noColor() {
+      elmOutput.classList.remove('red');
+      elmOutput.classList.remove('yellow');
+      elmOutput.classList.remove('green');
+    }
+
+    function red() {
+      noColor();
+      elmOutput.classList.add('red');
+    }
+
+    function yellow() {
+      noColor();
+      elmOutput.classList.add('yellow');
+    }
+
+    function green() {
+      noColor();
+      elmOutput.classList.add('green');
+    }
+
     var combo = document.getElementById('chooseMMFile');
 
     for (var n = 0; n < config.length; ++n) {
@@ -151,7 +184,12 @@
       combo.appendChild(elm);
     }
 
-    document.getElementById('buttonValidate').addEventListener('click', function() {
+    var buttonValidate = document.getElementById('buttonValidate');
+    buttonValidate.addEventListener('click', function() {
+
+      buttonValidate.disabled = true;
+      elmOutput.textContent = 'Validating...';
+      yellow();
 
       var url = '';
 
@@ -163,11 +201,13 @@
       }
 
       var mm = new checkmm.CheckMMex();
-      mm.readTokensAsync(url, function(error) {
-        if (error) {
-          console.error(error);
+      mm.readTokensAsync(url, function(okay, msg) {
+        buttonValidate.disabled = false;
+        output.textContent = msg;
+        if (okay) {
+          green();
         } else {
-          console.log('done');
+          red();
         }
       });
     });
