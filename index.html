@@ -203,7 +203,18 @@
       var mm = new checkmm.CheckMMex();
       mm.readTokensAsync(url, function(okay, msg) {
         buttonValidate.disabled = false;
+
+        if (okay) {
+          okay = mm.checkmm();
+          if (okay) {
+            msg = mm.getLogs();
+          } else {
+            msg = mm.getErrors();
+          }
+        }
+
         output.textContent = msg;
+
         if (okay) {
           green();
         } else {
